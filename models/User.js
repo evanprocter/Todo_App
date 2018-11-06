@@ -42,7 +42,6 @@ class User {
                     const u = new User(userObj.id, userObj.name);
                     return u;
                 });
-                return instanceArray;
             })
     }
 
@@ -76,7 +75,7 @@ class User {
 
     // DELETE
     delete() {
-        return.db.result(`
+        return db.result(`
         delete from users
         where id= $1
         `, [this.id]);
@@ -144,10 +143,11 @@ function getTodosForUsers(id) {
 // UPDATE
 // ==============================================================
 function updateName(id, name) {
-    return db.result(`update users
-                        set name=$2
-                    where id=$1
-                `, [id, true]);
+    return db.result(`
+        update users
+            set name=$2
+        where id=$1
+    `, [id, true]);
 }
 
 // ==============================================================
