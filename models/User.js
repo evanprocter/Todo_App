@@ -11,6 +11,7 @@ class User {
         // define properties that
         // are also the names
         // of the database columns
+        this.id = id;
         this.name = name;
     }
 
@@ -18,6 +19,24 @@ class User {
         console.log(`Hello ${otherUser.name}, I
         am ${this.name}`);
     }
+
+    // CREATE
+
+    // RETRIEVE
+    getById() {
+        return db.one(`select * from 
+        users where id= $1
+        `, [this.id]
+        );
+    }
+
+    getTodos() {
+        return db.any (`
+            select * from todos
+                where user_id= $1
+            `, [this.id]);
+    }
+
 }
 
 // ==============================================================
@@ -69,7 +88,8 @@ function getTodosForUsers(id) {
 function update.Name(id, name) {
     return db.result(`update users
                         set name=$2
-                    where id=$1`, [id, true]);
+                    where id=$1
+                `, [id, true]);
 }
 
 // ==============================================================
