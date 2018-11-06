@@ -69,9 +69,14 @@ class User {
     }
 
 
-
-
-    // UPDATE
+     // UPDATE
+     updateName(name) {
+         return db.result(`
+            update users
+                set name= $2
+            where id= $1
+            `, [this.id, name]);
+     }
 
     // DELETE
     delete() {

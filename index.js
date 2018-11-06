@@ -1,52 +1,94 @@
 require('dotenv').config();
 
-// const Todo = require
-// ('./models/Todo');
+// const Todo = require('./models/Todo');
 const User = require('./models/User');
 
-const skyler = new User('Skyler the pup');
-const ahjuma = new User('Ahjuma the kitty')
+User.searchByName('aylin')
+    .then(users => {
+        console.log(users);
+    });
 
-// let u = User.findById(1);
-// u.name = 'eileeeeeeen';
-// u.save();
+User.getById(6)
+    .then(allUsers => {
+        u.delete();
+    });
 
-// Todo.getAll()
-    // .then(results => {
-        // console.log(results);
-        // console.log(`yep those were the todos. cool.`)
-    // })
+User.deleteById(8);
 
-// Todo.getById(2)
-//     .then(result => { console.log(result); })
+User.getAll()
+    .then(allUsers => {
+        allUsers.forEach(user => {
+            console.log(user.name);
+        })
+    });
 
-// Todo.getById(2000000)
-//     .then(result => { console.log(result); })
+User.getById(1)
+    .then(userFromDB => {
+        console.log(userFromDB);
+        userFromDB.getTodos()
+            .then(todos => {
+                console.log(todos);
+            })
+    });
 
-// Todo.add('walk the chewbacca', false)
-//     .catch(err => {
-//         console.log(err);
-//     })
-//     .then(result => {
-//         console.log(result);
-//     })
+const beth = new User(2, 'beth');
+beth.getTodos()
+    .then(result => { console.log(result); })    
 
+let newUsers = [
+    'jeff',
+    'brandy',
+    'zack',
+    'tasha',
+    'jenn',
+    'cori'
+];
 
+newUsers.forEach(u => {
+    User.add(u)
+        .then(aNewUser => {
+            aNewUser.addTodo('do the thing');
+        })
+})
 
-// Todo.updateName(2, 'buy new hyperdrive')
-//     .then(result => {
-//         console.log(result);
-//     })
+const skyler = new User('Skyler the Dog');
+const ahjuma = new User('Ahjuma the Impressive');
 
-// Todo.markCompleted(1)
-//     .then(result => {
-//         console.log(result);
-//     })
+// debugger;
 
+skyler.greet(ahjuma);
+ahjuma.greet(skyler);
 
+let u = User.findById(1);
+u.name = 'eileeeeeeen';
+u.save();
 
+// deleting the user by their name
+User.deleteById('alsdfj;alsdjflasj')
+    .then(result => {console.log(result); })
+
+// deleting the user by id
 Todo.deleteById(1)
-    .then(result => {
-        console.log(result.rowCount);
+    .then(result => { console.log(result); }
+    
+// getting the todos for the user
+User.getTodosForUser(3)
+    .then(result => {console.log(result); })
+
+Todo.assignToUser(2, 2)
+    .then(() => {
+        User.getTodosForUser(2)
+        .then(result => { console.log(result); })
     })
 
+Todo.assignToUser(3, 2)
+    .then(() => {
+        User.getTodosForUser(2)
+        .then(result => { console.log(result); })
+    })
+
+Todo.assignToUser(4, 5)
+    .then(() => {
+        User.getTodosForUser(2)
+        .then(result => { console.log(result); })
+    })
