@@ -1,7 +1,13 @@
 require('dotenv').config();
 
-const Todo = require('./models/Todo');
-const User = require('./models/User')
+const Todo = require
+('./models/Todo');
+const User = require
+('./models/User');
+
+let u = User.findById(1);
+u.name = 'eileeeeeeen';
+u.save();
 
 // Todo.getAll()
     // .then(results => {

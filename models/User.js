@@ -1,5 +1,25 @@
 const db = require('./db');
 
+// declare a class named "User"
+class User {
+    // what properties should
+    // a user start off with?
+    // `constructor` is a method
+    // that automatically
+    // called when you create a user
+    constructor(name) {
+        // define properties that
+        // are also the names
+        // of the database columns
+        this.name = name;
+    }
+
+    greet(otherUser) {
+        console.log(`Hello ${otherUser.name}, I
+        am ${this.name}`);
+    }
+}
+
 // ==============================================================
 // CREATE
 // ==============================================================
@@ -16,6 +36,7 @@ function add(name) {
 // ==============================================================
 // RETRIEVE
 // ==============================================================
+// must create an alias for the column and row name
 function getAll() {
     return db.any(`
         select
@@ -39,6 +60,8 @@ function getTodosForUsers(id) {
             where user_id= $1
     `, [id]);
 }
+
+
 
 // ==============================================================
 // UPDATE
@@ -66,5 +89,6 @@ module.exports = {
     getAll,
     getById,
     getTodosForUser,
-    updateName
+    updateName,
+    User
 };
