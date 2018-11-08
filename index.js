@@ -3,10 +3,10 @@ require('dotenv').config();
 // const Todo = require('./models/Todo');
 const User = require('./models/User');
 
-User.searchByName('aylin')
-    .then(users => {
-        console.log(users);
-    });
+// User.searchByName('aylin')
+//     .then(users => {
+//         console.log(users);
+//     });
 
 // User.getById(6)
 //     .then(allUsers => {
