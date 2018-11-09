@@ -1,13 +1,11 @@
-// ==============================================================
-// Dabase Connection
-// ==============================================================
-
+// ============================================
+// Database Connection
 const pgp = require('pg-promise')({
-    query: e => {
+    query: e => {      
         console.log('QUERY: ', e.query);
         if (e.params) {
-            console.log('PARAMS: ', e.params);
-        }
+            console.log('PARAMS:', e.params);
+        }       
     }
 });
 const db = pgp({
@@ -15,6 +13,6 @@ const db = pgp({
     port: process.env.DB_PORT,
     database: process.env.DB_NAME,
 });
-// ==============================================================
+// ============================================
 
 module.exports = db;

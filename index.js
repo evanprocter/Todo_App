@@ -1,152 +1,131 @@
 require('dotenv').config();
 
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+
+// Configure body-parser to read data sent by HTML form tags
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// Configure body-parser to read JSON bodies
+app.use(bodyParser.json());
+
 // const Todo = require('./models/Todo');
 const User = require('./models/User');
 
-// User.searchByName('aylin')
-//     .then(users => {
-//         console.log(users);
-//     });
+// Listen for a GET request
+app.get('/users', (req, res) => {
+    User.getAll()
+        .then(allUsers => {
+            // res.status(200).json(allUsers);
+            res.send(allUsers);
+        })
+});
 
-// User.getById(6)
-//     .then(allUsers => {
-//         u.delete();
-//     });
-
-// User.deleteById(8);
-
-// User.getAll()
-//     .then(allUsers => {
-//         allUsers.forEach(user => {
-//             console.log(user.name);
-//         })
-//     });
-
-// User.getById(1)
-//     .then(userFromDB => {
-//         console.log(userFromDB);
-//         userFromDB.getTodos()
-//             .then(todos => {
-//                 console.log(todos);
-//             })
-//     });
-
-// const beth = new User(2, 'beth');
-// beth.getTodos()
-//     .then(result => { console.log(result); })    
-
-// let newUsers = [
-//     'jeff',
-//     'brandy',
-//     'zack',
-//     'tasha',
-//     'jenn',
-//     'cori'
-// ];
-
-// newUsers.forEach(u => {
-//     User.add(u)
-//         .then(aNewUser => {
-//             aNewUser.addTodo('do the thing');
-//         })
-// })
-
-// const skyler = new User('Skyler the Dog');
-// const ahjuma = new User('Ahjuma the Impressive');
-
-// // debugger;
-
-// skyler.greet(ahjuma);
-// ahjuma.greet(skyler);
-
-// let u = User.findById(1);
-// u.name = 'eileeeeeeen';
-// u.save();
-
-// // deleting the user by their name
-// User.deleteById('alsdfj;alsdjflasj')
-//     .then(result => {console.log(result); })
-
-// // deleting the user by id
-// Todo.deleteById(1)
-//     .then(result => { console.log(result); }
-    
-// // getting the todos for the user
-// User.getTodosForUser(3)
-//     .then(result => {console.log(result); })
-
-// Todo.assignToUser(2, 2)
-//     .then(() => {
-//         User.getTodosForUser(2)
-//         .then(result => { console.log(result); })
-//     })
-
-// Todo.assignToUser(3, 2)
-//     .then(() => {
-//         User.getTodosForUser(2)
-//         .then(result => { console.log(result); })
-//     })
-
-// Todo.assignToUser(4, 5)
-//     .then(() => {
-//         User.getTodosForUser(2)
-//         .then(result => { console.log(result); })
-//     })
-
-// Todo.assignToUser(1, 5)
-//     .then(() => {
-//         User.getTodosForUser(2)
-//         .then(result => { console.log(result); })
-//     })
-
-// User.getAll()
-//     .then(result => {console.log(result); })
+// Listen for POST requests
+// Create new user
+// using POST because HTML forms can only send GET or POST
+// HTML form cannor send a PUT (or a DELETE).
+app.post('/users', (req, res) => {
+    console.log(req.body);
+    // res.send('ok');
+    const newUsername = req.body.name;
+    console.log(newUsername);
+    User.add(newUsername)
+        .then(theUser => {
+            res.send(theUser);
+        })
+});
 
 
+// updating an existing user
+app.post('/users/:id(\\d+)', (req, res) => {
+    const id = req.params.id;
+    const newName = req.body.name;
+    console.log(id);
+    console.log(newName);
+    // res.send('ok');
+
+    // Get the user by their id
+    User.getById(id)
+        .then(theUser => {
+            // call that user's updateName method
+            theUser.updateName(newName)
+                .then(result => {
+                    if (result.rowCount === 1) {
+                        res.send('yeah you did');
+                    } else {
+                        res.send('oops');
+                    }
+                });
+            
+        });
+
+});
+
+// Match the string "/users/" followed by one or more digits
+// REGular EXpressions
+// app.get('/users/:id([0-9]+)', (req, res) => {
+app.get(`/users/:id(\\d+)`, (req, res) => {
+    // console.log(req.params.id);
+    User.getById(req.params.id)
+        .catch(err => {
+            res.send({
+                message: `no soup for you`
+            });
+        })
+        .then(theUser => {
+            res.send(theUser);
+        })
+});
+
+app.get('/users/register', (req, res) => {
+    res.send('you are on the registration page. no really.');
+});
+
+app.get('/users/:id(\\d+)/rename/:newName', (req, res) => {
+    User.getById(req.params.id)
+        .then(user => {
+            user.updateName(req.params.newName)
+                .then(() => {
+                    res.send('you just renamed them!');
+                })
+        })
+});
+
+app.listen(3000, () => {
+    console.log('You express app is ready!');
+});
 
 
-// User.getAll()
-//     .then(results => {
-//         console.log(results);
-//         console.log(`yep those were the users. cool.`)
-//     })
+// ===== example of sending a whole page
 
-// User.getById('chris')
-//     .then(result => { console.log(result); })
-
-// Todo.getById(200000)
-//     .then(result => { console.log(result); })
-
-// User.add('jeff')
-//     .then(result => {
-//         console.log(result);
-//     })
-
-// Todo.add('walk the chewbacca', false)
-//     .catch(err => {
-//         console.log(err);
-//     })
-//     .then(result => {
-//         console.log(result);
-//     })
-
-
-
-
-// User.updateName(6, 'JEEEEEEEEEEEf')
-//     .then(result => {
-//         console.log(result);
-//     })
-
-// Todo.markCompleted(1)
-//     .then(result => {
-//         console.log(result);
-//     })
-
-
-
-
-// User.deleteById(6)
-//     .then(result => {
-//         console.log(result.rowCount);
-//     })
+/*
+    User.getAll()
+        .then(allUsers => {
+            let usersList = ``;
+            allUsers.forEach(user => {
+                usersList += `<li>${user.name}</li>`
+            });
+            let thePage = `
+              <!doctype>
+              <html>
+                <head>
+                </head>
+                <body>
+                    <h1>hey</h1>
+                    <ul>
+                        ${usersList}
+                    </ul>
+                </body>
+              </html>
+            `;
+            res.send(thePage);
+            // console.log(allUsers);
+            // res.send(allUsers);
+            // res.send(allUsers);
+            // res.status(200).json(allUsers);
+        })
+    // res.send('Hellooooooo Expresssssssssssssuh');
+*/
+©
