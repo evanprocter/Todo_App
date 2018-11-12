@@ -8,10 +8,11 @@ values
     ('return david bowie''s texts', false);
 
     insert into users
-        (name)
+        (name, username, pwhash)
     values
-        ('aylin'),
-        ('beth'),
-        ('chris'),
-        ('bruce'),
-        ('alf');
+        ('aylin', 'aylin', ''),
+        ('beth', 'beth', ''),
+        ('chris', 'chris', ''),
+        ('bruce', 'bruce', ''),
+        ('alf', 'alf', '');
+        
