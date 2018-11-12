@@ -6,7 +6,7 @@ function userToItem(userObject) {
             /todos">
                 ${userObject.name}
             </a>
-            <a href="/users/${userObject.id}">(edit)</a>
+            <a href="/users/${userObject.id}/edit">(edit)</a>
         </li>
     `;
 }

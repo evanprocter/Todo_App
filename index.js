@@ -58,7 +58,7 @@ app.post('/users', (req, res) => {
 
 
 // updating an existing user
-app.post('/users/:id(\\d+)', (req, res) => {
+app.post('/users/:id(\\d+)/edit', (req, res) => {
     const id = req.params.id;
     const newName = req.body.name;
     console.log(id);
@@ -85,7 +85,7 @@ app.post('/users/:id(\\d+)', (req, res) => {
 // Match the string "/users/" followed by one or more digits
 // REGular EXpressions
 // app.get('/users/:id([0-9]+)', (req, res) => {
-app.get(`/users/:id(\\d+)`, (req, res) => {
+app.get(`/users/:id(\\d+)/edit`, (req, res) => {
     // console.log(req.params.id);
     User.getById(req.params.id)
         .catch(err => {
