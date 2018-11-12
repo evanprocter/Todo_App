@@ -4,6 +4,8 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 
+app.use(express.static('public'));
+
 // Configure body-parser to read data sent by HTML form tags
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -13,13 +15,30 @@ app.use(bodyParser.json());
 // const Todo = require('./models/Todo');
 const User = require('./models/User');
 
+const page = require('./views/page');
+
+const userList = require('./views/userList');
+
+
+app.get('/', (req, res) => {
+    const thePage = page('hey there');
+    res.send(thePage);
+});
+
+
 // Listen for a GET request
 app.get('/users', (req, res) => {
     User.getAll()
         .then(allUsers => {
             // res.status(200).json(allUsers);
-            res.send(allUsers);
-        })
+            // res.send(allUsers);
+            // const usersUL = userList(allUsers);
+            // const thePage = page(usersUL);
+            // res.send(thePage);
+
+            // other way of sending the data
+            res.send(page(userList(allUsers)));
+        });
 });
 
 // Listen for POST requests
@@ -39,7 +58,7 @@ app.post('/users', (req, res) => {
 
 
 // updating an existing user
-app.post('/users/:id(\\d+)', (req, res) => {
+app.post('/users/:id(\\d+)/edit', (req, res) => {
     const id = req.params.id;
     const newName = req.body.name;
     console.log(id);
@@ -66,7 +85,7 @@ app.post('/users/:id(\\d+)', (req, res) => {
 // Match the string "/users/" followed by one or more digits
 // REGular EXpressions
 // app.get('/users/:id([0-9]+)', (req, res) => {
-app.get(`/users/:id(\\d+)`, (req, res) => {
+app.get(`/users/:id(\\d+)/edit`, (req, res) => {
     // console.log(req.params.id);
     User.getById(req.params.id)
         .catch(err => {
@@ -128,4 +147,3 @@ app.listen(3000, () => {
         })
     // res.send('Hellooooooo Expresssssssssssssuh');
 */
-©
