@@ -19,12 +19,56 @@ const page = require('./views/page');
 
 const userList = require('./views/userList');
 
+const registrationForm = require('./views/registration');
+
 
 app.get('/', (req, res) => {
     const thePage = page('hey there');
     res.send(thePage);
 });
 
+app.get('/login', (req, res) => {
+    // send them the login form
+    const theLogin = loginForm();
+    const loginPage = page(theLogin);
+    res.send(theLogin);
+});
+
+app.post('/login', (req, res) => {
+    // process the login form
+    const loginName = req.body.name;
+    const loginUsername = req.name.username;
+    const loginPassword = req.name.password;
+
+    2.
+};
+
+app.get('/register', (req, res) => {
+    // send them the signup form
+    const theForm = registrationForm();
+    const thePage = page(theForm);
+    res.send(thePage);
+});
+
+app.post('/register', (req, res) => {
+    // process the signup form
+    // 1.grab the values out of req.body
+    const newName = req.body.name;
+    const newUsername = body.name.username;
+    const newPassword = body.name.password;
+    
+    console.log(newName);
+    console.log(userName);
+    console.log(newPassword);
+
+    // 2. call User.id
+    User.add(newName, newUsername, newPassword)
+        .catch(err => {
+            console.log(err);
+            // 3. if that works, redirect to the welcome page
+            res.redirect('/login');
+        });
+};
 
 // Listen for a GET request
 app.get('/users', (req, res) => {
@@ -41,20 +85,33 @@ app.get('/users', (req, res) => {
         });
 });
 
+
+app.get('/welcome', (req, res) => {
+    const welcomePage = page('this is the welcome page. WELCOMMMMEEEE');
+    res.send(welcomePage);
+});
+
+
+app.post('/register', (req, res) => {
+    console.log(req.body);
+    const registration = req.body
+})
+
 // Listen for POST requests
 // Create new user
 // using POST because HTML forms can only send GET or POST
 // HTML form cannor send a PUT (or a DELETE).
-app.post('/users', (req, res) => {
+app.post('/register/users', (req, res) => {
     console.log(req.body);
     // res.send('ok');
     const newUsername = req.body.name;
     console.log(newUsername);
     User.add(newUsername)
-        .then(theUser => {
-            res.send(theUser);
-        })
+    .then(theUser => {
+        res.send(theUser);
+    })
 });
+
 
 
 // updating an existing user
